@@ -3,13 +3,15 @@ var environment = {}
 environment.staging = {
     'httpPort' : 3000,
     'httpsPort' : 3001,
-    'envName': 'staging'
+    'envName': 'staging',
+    'hashingSecret':'secret'
 }
 
 environment.production = {
    'httpPort' : 5000,
    'httpsPort' : 5000,
-   'envName' : 'production'
+   'envName' : 'production',
+   'hashingSecret':'secret'
 }
 
 //determin which environment was passed as commadline argument

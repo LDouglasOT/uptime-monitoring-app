@@ -4,6 +4,17 @@ var url = require('url');
 var stringDecoder = require('string_decoder').StringDecoder;
 var config = require('./config')
 var fs = require('fs')
+var _data = require('./lib/data')
+var handler = require('./lib/handlers')
+var helpers = require('./lib/helpers')
+
+// _data.delete('test','newFile',function(err,data){
+//     console.log('errored ',err);
+// })
+// _data.read('test','newFile',function(err,data){
+//     console.log(err)
+//     console.log(data)
+// })
 
 //instantiate an http server
 var httpServer = http.createServer(function(req,res){
@@ -63,9 +74,9 @@ req.on('end',function(){
     var data = {
         'trimmedPath':trimmedPath,
         'queryStringObject':queryStringObject,
-        'method':method,
-        'headers':headers,
-        'payload':buffer
+        'method': method,
+        'headers': headers,
+        'payload': helpers.parseJsonToObject(buffer)
     }
     chosePath(data, function(statusCode,payload){
         statusCode = typeof(statusCode) == 'number' ? statusCode:200
@@ -77,26 +88,14 @@ req.on('end',function(){
         console.log('returning',statusCode,payloadString)
     })
 });
-
 }
 
-//creating the routes handlers
-var handler = {}
 
-//sample handler
-handler.sample = function(data,callback){
-    callback(409,{'name':'sample handler'})
-};
-handler.ping = function(data,callback){
-    
-    callback(200)
-}
-//notFound handler
-handler.notFound = function(data,callback){
-callback(404)
-};
+
 
 var router = {
     'sample':handler.sample,
-    'ping':handler.ping
+    'ping':handler.ping,
+    'users':handler.users,
+    'tokens':handler.tokens
 };
